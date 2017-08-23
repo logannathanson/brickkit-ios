@@ -131,5 +131,6 @@ extension BrickCollectionView {
     func setupSectionAndLayout(_ section: BrickSection) {
         self.setSection(section)
         self.layoutSubviews()
+        self.layoutIfNeeded()
     }
 }

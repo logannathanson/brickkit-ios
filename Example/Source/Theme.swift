@@ -33,6 +33,7 @@ class Theme {
         LabelBrickCell.appearance().edgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
         ButtonBrickCell.appearance().edgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
         SegmentHeaderBrickCell.appearance().edgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+ 
     }
 
     class var textColorForNavigationTitle: UIColor {

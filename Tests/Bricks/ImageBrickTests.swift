@@ -83,13 +83,10 @@ class ImageBrickTests: XCTestCase {
     }
 
     func testUIImageScaleAspectFill() {
-        brickView.registerBrickClass(ImageBrick.self)
-
         let section = BrickSection(bricks: [
             ImageBrick(dataSource: ImageBrickModel(image: image, contentMode: .scaleAspectFill)),
             ])
-        brickView.setSection(section)
-        brickView.layoutSubviews()
+        brickView.setupSectionAndLayout(section)
 
         let cell1 = brickView.cellForItem(at: IndexPath(item: 0, section: 1)) as? ImageBrickCell
         cell1?.layoutIfNeeded()
@@ -99,14 +96,10 @@ class ImageBrickTests: XCTestCase {
     }
 
     func testUIImageScaleAspectFit() {
-        brickView.registerBrickClass(ImageBrick.self)
-
-
         let section = BrickSection(bricks: [
             ImageBrick(dataSource: ImageBrickModel(image: image, contentMode: .scaleAspectFit)),
             ])
-        brickView.setSection(section)
-        brickView.layoutSubviews()
+        brickView.setupSectionAndLayout(section)
 
         let cell1 = brickView.cellForItem(at: IndexPath(item: 0, section: 1)) as? ImageBrickCell
         cell1?.layoutIfNeeded()
@@ -115,14 +108,10 @@ class ImageBrickTests: XCTestCase {
     }
 
     func testUIImageScaleToFill() {
-        brickView.registerBrickClass(ImageBrick.self)
-
-
         let section = BrickSection(bricks: [
             ImageBrick(dataSource: ImageBrickModel(image: image, contentMode: .scaleToFill)),
             ])
-        brickView.setSection(section)
-        brickView.layoutSubviews()
+        brickView.setupSectionAndLayout(section)
 
         let cell1 = brickView.cellForItem(at: IndexPath(item: 0, section: 1)) as? ImageBrickCell
         cell1?.layoutIfNeeded()

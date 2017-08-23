@@ -106,7 +106,7 @@ open class BaseBrickCell: UICollectionViewCell {
         // UICollectionView zIndex management 'fixes' the issue
         // http://stackoverflow.com/questions/12659301/uicollectionview-setlayoutanimated-not-preserving-zindex
         self.layer.zPosition = CGFloat(layoutAttributes.zIndex)
-        self.layoutIfNeeded()
+//        self.layoutIfNeeded()
     }
 
     open override func layoutSubviews() {
@@ -114,7 +114,7 @@ open class BaseBrickCell: UICollectionViewCell {
         brickBackgroundView?.frame = self.bounds
 
         if frame.width == requestedWidth {
-            self.layoutIfNeeded() // This layoutIfNeeded is added to make sure that the subviews are laid out correctly
+//            self.layoutIfNeeded() // This layoutIfNeeded is added to make sure that the subviews are laid out correctly
             framesDidLayout()
         }
     }
@@ -178,12 +178,17 @@ open class BrickCell: BaseBrickCell {
         return UIEdgeInsetsMake(defaultTopConstraintConstant, defaultLeftConstraintConstant, defaultBottomConstraintConstant, defaultRightConstraintConstant)
     }
 
+    private var didUpdateEdgeInsets: Bool = false
     @objc open dynamic var edgeInsets: UIEdgeInsets = UIEdgeInsets.zero {
         didSet {
+            if edgeInsets == oldValue {
+                return
+            }
             self.topSpaceConstraint?.constant = edgeInsets.top
             self.bottomSpaceConstraint?.constant = edgeInsets.bottom
             self.leftSpaceConstraint?.constant = edgeInsets.left
             self.rightSpaceConstraint?.constant = edgeInsets.right
+            didUpdateEdgeInsets = true
         }
     }
 
@@ -224,9 +229,12 @@ open class BrickCell: BaseBrickCell {
             return layoutAttributes
         }
 
-        guard let brickAttributes = layoutAttributes as? BrickLayoutAttributes, brickAttributes.isEstimateSize else {
-            return layoutAttributes
+        if !didUpdateEdgeInsets {
+            guard let brickAttributes = layoutAttributes as? BrickLayoutAttributes, brickAttributes.isEstimateSize else {
+                return layoutAttributes
+            }
         }
+        didUpdateEdgeInsets = false
 
         let preferred = layoutAttributes
 

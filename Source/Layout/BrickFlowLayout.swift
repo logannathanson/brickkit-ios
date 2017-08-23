@@ -39,10 +39,12 @@ open class BrickFlowLayout: UICollectionViewLayout, BrickLayout {
         set {
             if !newValue {
                 dirtyMap.removeAll()
+                dirtyIndexPaths.removeAll()
             }
         }
     }
     var dirtyMap: [Int: Int] = [:]
+    var dirtyIndexPaths: [IndexPath] = []
 
     // Mark: - Public members
 
@@ -304,6 +306,12 @@ extension BrickFlowLayout {
                 invalidateHeight(for: sectionAttributes.indexPath, updatedAttributes: updatedAttributes)
             }
         }
+
+        recalculateContentSize()
+        dirtyIndexPaths.forEach { indexPath in
+            delegate?.brickLayout(self, didUpdateHeightForItemAtIndexPath: indexPath)
+        }
+
         isDirty = false
     }
 
@@ -375,6 +383,7 @@ extension BrickFlowLayout {
         }
         let shouldInvalidate = preferredAttributes.frame.height != brickAttribute.originalFrame.height
         brickAttribute.isEstimateSize = false
+
         if shouldInvalidate {
             let indexPath = preferredAttributes.indexPath
             sections![indexPath.section]?.update(height: preferredAttributes.frame.height, at: indexPath.item, continueCalculation: false, updatedAttributes: nil)
@@ -385,6 +394,7 @@ extension BrickFlowLayout {
             } else {
                 dirtyMap[indexPath.section] = indexPath.item
             }
+            dirtyIndexPaths.append(indexPath)
         }
         return false
     }
@@ -578,6 +588,7 @@ extension BrickFlowLayout: BrickLayoutInvalidationProvider {
         self.contentSize = contentSize
     }
 
+    @discardableResult
     func recalculateContentSize() -> CGSize {
         let oldContentSize = self.contentSize
         contentSize = sections?[0]?.frame.size ?? CGSize.zero
