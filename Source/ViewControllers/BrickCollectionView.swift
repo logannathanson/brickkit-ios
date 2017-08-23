@@ -98,6 +98,13 @@ open class BrickCollectionView: UICollectionView {
         register(BrickSectionCell.self, forCellWithReuseIdentifier: BrickSection.nibName)
     }
 
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        if layout.isDirty {
+            self.layout.invalidateLayout(with: BrickLayoutInvalidationContext(type: .updateDirtyBricks))
+        }
+    }
+    
     // MARK: - Setting up the models
 
     /// Sets the section for the BrickCollectionView

@@ -239,18 +239,20 @@ internal class BrickLayoutSection {
         attributes.frame.size.width = 0
     }
 
-    func update(height: CGFloat, at index: Int, updatedAttributes: OnAttributesUpdatedHandler?) {
+    func update(height: CGFloat, at index: Int, continueCalculation: Bool, updatedAttributes: OnAttributesUpdatedHandler?) {
         guard let brickAttributes = attributes[index] else {
             return
         }
         brickAttributes.isEstimateSize = false
 
-        guard brickAttributes.originalFrame.height != height else {
-            return
-        }
+//        guard brickAttributes.originalFrame.height != height else {
+//            return
+//        }
 
         brickAttributes.originalFrame.size.height = height
-        createOrUpdateCells(from: index, invalidate: false, updatedAttributes: updatedAttributes)
+        if continueCalculation {
+            createOrUpdateCells(from: index, invalidate: false, updatedAttributes: updatedAttributes)
+        }
     }
 
     func invalidate(at index: Int, updatedAttributes: OnAttributesUpdatedHandler?) {
@@ -307,7 +309,7 @@ internal class BrickLayoutSection {
     ///   - firstIndex: The index the calculation needs to start from (the main reason is to just calculate the next cells
     ///   - invalidate: Identifies if the attributes need to be invalidated (reset height etc)
     ///   - updatedAttributes: Callback for the attributes that have been updated
-    fileprivate func createOrUpdateCells(from firstIndex: Int, invalidate: Bool, updatedAttributes: OnAttributesUpdatedHandler?) {
+    public func createOrUpdateCells(from firstIndex: Int, invalidate: Bool, updatedAttributes: OnAttributesUpdatedHandler?) {
 
         guard let dataSource = dataSource else {
             return

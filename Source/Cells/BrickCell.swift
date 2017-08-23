@@ -224,6 +224,10 @@ open class BrickCell: BaseBrickCell {
             return layoutAttributes
         }
 
+        guard let brickAttributes = layoutAttributes as? BrickLayoutAttributes, brickAttributes.isEstimateSize else {
+            return layoutAttributes
+        }
+
         let preferred = layoutAttributes
 
         // We're inverting the frame because the given frame is already transformed
